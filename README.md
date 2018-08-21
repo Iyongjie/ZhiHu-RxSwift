@@ -3,7 +3,9 @@
  
 [RxSwift 社区](https://github.com/RxSwiftCommunity?language=swift&page=2&q=&type=&utf8=%E2%9C%93)  
 [参考项目地址](https://github.com/kLike/ZhiHu-RxSwift)   
-[接口地址](./resources/知乎日报部分api.html)
+    <p>
+        <a href="./resources/知乎日报部分api.html" >接口地址</a>
+    </p>
 ## 展示: 
 <img src="./resources/menuShow.gif" width="180" hegiht="280" align=left/>
 <img src="./resources/newsChange.gif" width="180" hegiht="280" align=center/>
