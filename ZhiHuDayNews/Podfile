@@ -1,0 +1,27 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'ZhiHuDayNews' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+pod 'RxSwift'
+pod 'RxCocoa'
+pod 'Then'
+pod 'SwiftDate'
+pod 'Moya'
+pod 'Kingfisher'
+pod 'HandyJSON'
+pod 'SVProgressHUD'
+  # Pods for ZhiHuDayNews
+
+  target 'ZhiHuDayNewsTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'ZhiHuDayNewsUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

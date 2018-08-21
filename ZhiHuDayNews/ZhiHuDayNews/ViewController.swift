@@ -12,7 +12,11 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        ApiProvider.request(ApiManager.getNewsList, model: HomeModel.self) { (resultData) in
+            print(resultData!)
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
