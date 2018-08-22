@@ -1,6 +1,6 @@
 # ZhiHu-RxSwift
 知乎日报，MVC + RxSwift,适合RxSwift初学者的项目。  
- 
+RxSwift+Moya+HandyJSON  
 [RxSwift 社区](https://github.com/RxSwiftCommunity?language=swift&page=2&q=&type=&utf8=%E2%9C%93)  
 [参考项目地址](https://github.com/kLike/ZhiHu-RxSwift)   
     <p>

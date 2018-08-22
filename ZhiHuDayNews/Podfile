@@ -6,12 +6,14 @@ target 'ZhiHuDayNews' do
   use_frameworks!
 pod 'RxSwift'
 pod 'RxCocoa'
+pod 'RxDataSources'
 pod 'Then'
 pod 'SwiftDate'
 pod 'Moya'
 pod 'Kingfisher'
 pod 'HandyJSON'
 pod 'SVProgressHUD'
+pod 'SnapKit'
   # Pods for ZhiHuDayNews
 
   target 'ZhiHuDayNewsTests' do
