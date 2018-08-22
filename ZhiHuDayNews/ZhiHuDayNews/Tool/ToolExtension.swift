@@ -8,9 +8,10 @@
 
 import UIKit
 
+
 let ScreenWidth = UIScreen.main.bounds.size.width
 let ScreenHeight = UIScreen.main.bounds.size.height
-
+let NavHeight = ScreenHeight == 812 ? 88: 64
 
 extension UIColor {
     static func rgb(_ r: CGFloat,_ g: CGFloat,_ b: CGFloat) -> UIColor {
@@ -43,3 +44,5 @@ extension Int {
         }
      }
 }
+
+

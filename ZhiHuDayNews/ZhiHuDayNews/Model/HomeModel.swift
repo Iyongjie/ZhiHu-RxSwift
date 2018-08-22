@@ -22,5 +22,6 @@ struct StoryModel: HandyJSON {
     var ga_prefix:String?
     var title:String?
     var image:String?
-    
+    var multipic: Bool?
+
 }

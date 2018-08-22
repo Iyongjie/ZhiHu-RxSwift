@@ -20,8 +20,9 @@
 		B75536F5212AA6A8006D4F73 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75536F4212AA6A8006D4F73 /* ApiManager.swift */; };
 		B75536F7212ABAD3006D4F73 /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75536F6212ABAD3006D4F73 /* HomeModel.swift */; };
 		B75536F9212AD375006D4F73 /* ThemeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75536F8212AD375006D4F73 /* ThemeModel.swift */; };
-		B7B0FB4A212BF79A004D280E /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B0FB49212BF79A004D280E /* BannerCell.swift */; };
-		B7B0FB4C212C022E004D280E /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B0FB4B212C022E004D280E /* BannerView.swift */; };
+		B7837CBA212D07A2007B1887 /* CustomNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7837CB9212D07A2007B1887 /* CustomNav.swift */; };
+		B7837CBC212D07EA007B1887 /* RefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7837CBB212D07EA007B1887 /* RefreshView.swift */; };
+		B7837CBE212D34BD007B1887 /* HomeListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7837CBD212D34BD007B1887 /* HomeListTableViewCell.swift */; };
 		F585A824CEE137720DF2F763 /* Pods_ZhiHuDayNewsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AFB7B8D28B1AE5056D091FC /* Pods_ZhiHuDayNewsUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,8 +69,9 @@
 		B75536F4212AA6A8006D4F73 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		B75536F6212ABAD3006D4F73 /* HomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
 		B75536F8212AD375006D4F73 /* ThemeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModel.swift; sourceTree = "<group>"; };
-		B7B0FB49212BF79A004D280E /* BannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
-		B7B0FB4B212C022E004D280E /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		B7837CB9212D07A2007B1887 /* CustomNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNav.swift; sourceTree = "<group>"; };
+		B7837CBB212D07EA007B1887 /* RefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshView.swift; sourceTree = "<group>"; };
+		B7837CBD212D34BD007B1887 /* HomeListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListTableViewCell.swift; sourceTree = "<group>"; };
 		E52B1B289F1397C663B8F30A /* Pods-ZhiHuDayNews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhiHuDayNews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZhiHuDayNews/Pods-ZhiHuDayNews.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,7 +152,6 @@
 			isa = PBXGroup;
 			children = (
 				B7418A3F2126A813000C97C2 /* AppDelegate.swift */,
-				B7418A412126A813000C97C2 /* HomeViewController.swift */,
 				B7418A6E2126A8A4000C97C2 /* Tool */,
 				B7418A702126A8B1000C97C2 /* Controller */,
 				B7418A6F2126A8AA000C97C2 /* Views */,
@@ -202,7 +203,9 @@
 		B7418A6F2126A8AA000C97C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B7B0FB48212BF77C004D280E /* banner */,
+				B7837CBF212D4053007B1887 /* cell */,
+				B7837CB9212D07A2007B1887 /* CustomNav.swift */,
+				B7837CBB212D07EA007B1887 /* RefreshView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,17 +213,17 @@
 		B7418A702126A8B1000C97C2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B7418A412126A813000C97C2 /* HomeViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		B7B0FB48212BF77C004D280E /* banner */ = {
+		B7837CBF212D4053007B1887 /* cell */ = {
 			isa = PBXGroup;
 			children = (
-				B7B0FB49212BF79A004D280E /* BannerCell.swift */,
-				B7B0FB4B212C022E004D280E /* BannerView.swift */,
+				B7837CBD212D34BD007B1887 /* HomeListTableViewCell.swift */,
 			);
-			path = banner;
+			path = cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -374,6 +377,7 @@
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
 				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
+				"${BUILT_PRODUCTS_DIR}/ZCycleView/ZCycleView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -390,6 +394,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Then.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZCycleView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -457,11 +462,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7B0FB4A212BF79A004D280E /* BannerCell.swift in Sources */,
 				B75536F5212AA6A8006D4F73 /* ApiManager.swift in Sources */,
 				B75536F3212AA3C0006D4F73 /* ToolExtension.swift in Sources */,
 				B7418A422126A813000C97C2 /* HomeViewController.swift in Sources */,
-				B7B0FB4C212C022E004D280E /* BannerView.swift in Sources */,
+				B7837CBA212D07A2007B1887 /* CustomNav.swift in Sources */,
+				B7837CBE212D34BD007B1887 /* HomeListTableViewCell.swift in Sources */,
+				B7837CBC212D07EA007B1887 /* RefreshView.swift in Sources */,
 				B75536F9212AD375006D4F73 /* ThemeModel.swift in Sources */,
 				B75536F7212ABAD3006D4F73 /* HomeModel.swift in Sources */,
 				B7418A402126A813000C97C2 /* AppDelegate.swift in Sources */,

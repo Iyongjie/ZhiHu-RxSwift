@@ -9,7 +9,8 @@
 import Foundation
 import Moya
 import HandyJSON
-import SVProgressHUD 
+import SVProgressHUD
+import RxSwift
 
 let ZHBaseURL = "http://news-at.zhihu.com/api/"
 
@@ -114,7 +115,15 @@ extension MoyaProvider {
     
 }
 
-
+//RxSwift+HandyJSON扩展
+extension PrimitiveSequence where TraitType == SingleTrait, ElementType == Response {
+    func mapModel<T: HandyJSON>(_ type: T.Type) -> Single<T>{
+        return flatMap { response -> Single<T> in
+            return Single.just(try response.mapModel(T.self))
+        }
+    }
+    
+}
 
 
 

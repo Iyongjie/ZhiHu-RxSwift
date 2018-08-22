@@ -8,6 +8,9 @@ PODS:
   - Moya/Core (11.0.2):
     - Alamofire (~> 4.1)
     - Result (~> 3.0)
+  - Moya/RxSwift (11.0.2):
+    - Moya/Core
+    - RxSwift (~> 4.0)
   - Result (3.2.4)
   - RxCocoa (4.2.0):
     - RxSwift (~> 4.0)
@@ -20,11 +23,14 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftDate (5.0.5)
   - Then (2.3.0)
+  - ZCycleView (0.0.8):
+    - Kingfisher (>= 4.3.1)
 
 DEPENDENCIES:
   - HandyJSON
   - Kingfisher
   - Moya
+  - Moya/RxSwift
   - RxCocoa
   - RxDataSources
   - RxSwift
@@ -32,6 +38,7 @@ DEPENDENCIES:
   - SVProgressHUD
   - SwiftDate
   - Then
+  - ZCycleView
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -48,6 +55,7 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftDate
     - Then
+    - ZCycleView
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
@@ -63,7 +71,8 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: 963ed9f6d97e2de396d4ce73174185de04f9cdb6
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
+  ZCycleView: 9a1c3cd643295f3fb39a24137e39ff68c7007dc3
 
-PODFILE CHECKSUM: 0cf815ec07ae64aefc59798e97c8e16787bfbc1c
+PODFILE CHECKSUM: 50603f8548e787fe408697ed7b7712e2b15129ba
 
 COCOAPODS: 1.5.3
