@@ -8,12 +8,14 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 class CustomNav: UIView {
 
-    var title = "知乎日报"
+    let disposeBag = DisposeBag()
     
-    
+    var navTitle = Variable("今日要闻")
+ 
     let sideButton = UIButton().then {
         $0.setImage(UIImage(named: "menu"), for: .normal)
     }
@@ -29,7 +31,8 @@ class CustomNav: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configUI()
-        self.titleLab.text = title
+        self.titleLab.text = navTitle.value
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,7 +49,7 @@ class CustomNav: UIView {
             make.centerY.equalTo(titleLab)
         }
         
-        let titleWidth = self.textSize(text: title, font: UIFont.boldSystemFont(ofSize: 18), maxSize: CGSize(width: 240, height: CGFloat(MAXFLOAT))).width + 20
+        let titleWidth = self.textSize(text: navTitle.value, font: UIFont.boldSystemFont(ofSize: 18), maxSize: CGSize(width: 240, height: CGFloat(MAXFLOAT))).width + 20
         titleLab.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-10)
@@ -59,6 +62,24 @@ class CustomNav: UIView {
             make.centerY.equalTo(titleLab)
             make.width.height.equalTo(40)
         }
+        
+        navTitle
+            .asObservable()
+            .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (text) in
+                self.titleLab.text = text
+                
+                let titleWidth = self.textSize(text: self.navTitle.value, font: UIFont.boldSystemFont(ofSize: 18), maxSize: CGSize(width: 240, height: CGFloat(MAXFLOAT))).width + 20
+                self.titleLab.snp.remakeConstraints({ (make) in
+                    make.centerX.equalToSuperview()
+                    make.bottom.equalToSuperview().offset(-10)
+                    make.width.equalTo(titleWidth)
+                    make.height.equalTo(20)
+                })
+            })
+            .disposed(by: disposeBag)
+        
     }
 
     //方法

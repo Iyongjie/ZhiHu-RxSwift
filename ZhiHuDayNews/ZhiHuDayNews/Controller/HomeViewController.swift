@@ -91,9 +91,11 @@ class HomeViewController: UIViewController {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (num) in
                 if num == 0 {
-                    self.navView.titleLab.text = "今日要闻"
+                    self.navView.navTitle.value = "今日要闻"
                 } else {
-                    self.navView.titleLab.text = self.dataSource[num].model
+                    if let date = DateInRegion.init(self.dataSource[num].model, formats: ["yyyyMMdd"]){
+                     self.navView.navTitle.value = "\(date.month)月\(date.day)日\(date.weekday.toWeekday())"
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -111,7 +113,8 @@ class HomeViewController: UIViewController {
     private func requestData() { 
         ApiProvider
             .rx
-            .request(ApiManager.getNewsList).mapModel(HomeModel.self)
+            .request(ApiManager.getNewsList)
+            .mapModel(HomeModel.self)
             .subscribe(onSuccess: { (model) in
                 self.dataArr.value = [SectionModel(model: model.date!, items: model.stories!)]
                 var imgArr = [String]()
@@ -157,7 +160,10 @@ extension HomeViewController: UITableViewDelegate {
                 $0.textColor = .white
                 $0.font = UIFont.systemFont(ofSize: 15)
                 $0.textAlignment = .center
-                $0.text = self.dataSource[section].model
+                
+                if let date = DateInRegion.init(self.dataSource[section].model, formats: ["yyyyMMdd"]) {
+                    $0.text = "\(date.month)月\(date.day)日\(date.weekday.toWeekday())"
+                }
             }
         }
         return UIView()
