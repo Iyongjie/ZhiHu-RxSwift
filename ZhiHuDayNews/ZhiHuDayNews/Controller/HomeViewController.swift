@@ -17,12 +17,11 @@ import SwiftDate
 
 class HomeViewController: UIViewController {
     
-    //MARK: property
-    
+    //MARK: 属性
     var newsDate = ""
     var titleNum = Variable(0)
     
-    let dataArr = Variable([SectionModel<String,StoryModel>]())
+    var dataArr = Variable([SectionModel<String,StoryModel>]())
     let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String,StoryModel>>(configureCell: {(dataSource,tv,indexPath,model) in
         let cell = tv.dequeueReusableCell(withIdentifier: "homeListCellId") as! HomeListTableViewCell
         cell.titleLab.text = model.title
@@ -32,11 +31,11 @@ class HomeViewController: UIViewController {
     })
     let disposeBag = DisposeBag()
     
-    var navView: CustomNav = {
+    lazy var navView: CustomNav = {
         let nav = CustomNav(frame: CGRect(x: 0, y: 0, width: Int(ScreenWidth), height: NavHeight))
         return nav
     }()
-    var bannerView: ZCycleView = {
+    lazy var bannerView: ZCycleView = {
         let banner = ZCycleView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenWidth*200/375))
         banner.scrollDirection = .horizontal
         banner.timeInterval = 2
@@ -45,7 +44,7 @@ class HomeViewController: UIViewController {
         banner.imageContentMode = .scaleAspectFill
         return banner
     }()
-    var homeTableView:UITableView = {
+    lazy var homeTableView:UITableView = {
         let table = UITableView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenHeight), style: .plain)
         table.register(HomeListTableViewCell.self, forCellReuseIdentifier: "homeListCellId")
         return table
@@ -53,37 +52,25 @@ class HomeViewController: UIViewController {
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        requestData()
-        
-        self.view.addSubview(homeTableView)
         if #available(iOS 11.0, *) {
             homeTableView.contentInsetAdjustmentBehavior = .never
         } else {
             automaticallyAdjustsScrollViewInsets = false
         }
+        //MARK: 请求数据,添加视图
+        requestData()
+        self.view.addSubview(homeTableView)
         homeTableView.tableHeaderView = bannerView
         bannerView.delegate = self
         self.view.addSubview(navView)
+        
+        //MARK: 配置rx
+        configRxTable()
         
         dataArr
             .asObservable()
         .bind(to: homeTableView.rx.items(dataSource: dataSource))
         .disposed(by: disposeBag)
-        
-        homeTableView
-            .rx
-            .modelSelected(StoryModel.self)
-            .subscribe(onNext: { (model) in
-                self.homeTableView.deselectRow(at: self.homeTableView.indexPathForSelectedRow!, animated: true)
-                print("\(model)")
-            })
-            .disposed(by: disposeBag)
-        
-        homeTableView
-            .rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
         
         titleNum
             .asObservable()
@@ -109,8 +96,76 @@ class HomeViewController: UIViewController {
         return .lightContent
     }
 
-    //MARK: private func
-    private func requestData() { 
+    //MARK: 私有方法
+    private func configRxTable() {
+        //UITableViewDelegate
+        homeTableView
+            .rx
+            .modelSelected(StoryModel.self)
+            .subscribe(onNext: { (model) in
+                self.homeTableView.deselectRow(at: self.homeTableView.indexPathForSelectedRow!, animated: true)
+                print("\(model)")
+            })
+            .disposed(by: disposeBag)
+        homeTableView
+            .rx
+            .willDisplayCell
+            .subscribe(onNext: { cell,indexPath in
+                if indexPath.section == self.dataArr.value.count - 1 && indexPath.row == 0 {
+                    self.requestMoreData()
+                }
+                self.titleNum.value = (self.homeTableView.indexPathsForVisibleRows?.reduce(Int.max) { (result, ind) -> Int in return min(result, ind.section) })!
+            })
+            .disposed(by: disposeBag)
+         
+        homeTableView
+            .rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
+
+        homeTableView
+        .rx
+        .contentOffset
+            .subscribe(onNext: { offset in
+                self.navView.backgroundColor = UIColor.colorFromHex(0x3F8DD0).withAlphaComponent(offset.y / 200)
+                self.navView.refreshView.pullToRefresh(progress: -offset.y / 64)
+            })
+        .disposed(by: disposeBag)
+        
+        //MARK: UIScrollViewDelegate
+        homeTableView
+        .rx
+        .didScroll
+            .subscribe(onNext:{
+                    self.navView.backgroundColor = UIColor.colorFromHex(0x3F8DD0).withAlphaComponent(self.homeTableView.contentOffset.y / 200)
+                    self.navView.refreshView.pullToRefresh(progress: -self.homeTableView.contentOffset.y / 64)
+            })
+        .disposed(by: disposeBag)
+        
+        homeTableView
+        .rx
+        .didEndDecelerating
+            .subscribe(onNext: {
+                self.navView.refreshView.resetLayer()
+            })
+        .disposed(by: disposeBag)
+        
+        homeTableView
+        .rx
+        .didEndDragging
+            .subscribe({_ in
+                if self.homeTableView.contentOffset.y <= -64 {
+                    self.navView.refreshView.beginRefresh {
+                        self.requestData()
+                    }
+                }
+            })
+        .disposed(by: disposeBag)
+    }
+    
+    private func requestData() {
+
         ApiProvider
             .rx
             .request(ApiManager.getNewsList)
@@ -143,15 +198,9 @@ class HomeViewController: UIViewController {
 
 }
 
-
+//RxSwift没有tableview相关方法，用原生实现
 extension HomeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == dataArr.value.count - 1 && indexPath.row == 0 {
-            requestMoreData()
-        }
-        self.titleNum.value = (tableView.indexPathsForVisibleRows?.reduce(Int.max) { (result, ind) -> Int in return min(result, ind.section) })!
 
-    }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section > 0 {
             return UILabel().then {
@@ -181,23 +230,6 @@ extension HomeViewController: UITableViewDelegate {
         return 0.01
     }
     
-}
-
-extension HomeViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) { 
-        navView.backgroundColor = UIColor.colorFromHex(0x3F8DD0).withAlphaComponent(scrollView.contentOffset.y / 200)
-        navView.refreshView.pullToRefresh(progress: -scrollView.contentOffset.y / 64)
-    }
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if scrollView.contentOffset.y <= -64 {
-            navView.refreshView.beginRefresh {
-                self.requestData()
-            }
-        }
-    }
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        navView.refreshView.resetLayer()
-    }
 }
 
 extension HomeViewController: ZCycleViewProtocol {
