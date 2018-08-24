@@ -76,7 +76,7 @@ class HomeViewController: UIViewController {
             .modelSelected(StoryModel.self)
             .subscribe(onNext: { (model) in
                 self.homeTableView.deselectRow(at: self.homeTableView.indexPathForSelectedRow!, animated: true)
-  
+                print("\(model)")
             })
             .disposed(by: disposeBag)
         
