@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import WebKit
 
-class DetailWebView: WKWebView {
+class DetailWebView: UIWebView {
     var img = UIImageView().then { (make) in
         make.frame = CGRect(x: 0, y: 0, width: ScreenWidth, height: 200)
         make.contentMode = .scaleAspectFill
@@ -44,14 +43,33 @@ class DetailWebView: WKWebView {
     var nextLab = UILabel().then { (make) in
         make.frame = CGRect(x: 15, y: ScreenHeight + 30, width: ScreenHeight - 30, height: 20)
         make.font = UIFont.systemFont(ofSize: 15)
-        make.text = "载入上一篇"
+        make.text = "载入下一篇"
         make.textAlignment = .center
         make.textColor = UIColor.colorFromHex(0x777777)
     }
     var waitView = UIView().then { (make) in
-        
+        make.backgroundColor = .white
+        make.frame = CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenHeight)
+        let acv  = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        acv.center =  make.center
+        acv.startAnimating()
+        make.addSubview(acv)
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        img.addSubview(maskImg)
+        scrollView.addSubview(img)
+        scrollView.addSubview(titleLabel)
+        scrollView.addSubview(imgLabel)
+        scrollView.addSubview(previousLab)
+        scrollView.addSubview(nextLab)
+        scrollView.addSubview(waitView)
+        backgroundColor = .white
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     

@@ -22,6 +22,7 @@ class HomeViewController: UIViewController {
     var titleNum = Variable(0)
     
     var dataArr = Variable([SectionModel<String,StoryModel>]())
+    var bannerArr = [StoryModel]()
     let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String,StoryModel>>(configureCell: {(dataSource,tv,indexPath,model) in
         let cell = tv.dequeueReusableCell(withIdentifier: "homeListCellId") as! HomeListTableViewCell
         cell.titleLab.text = model.title
@@ -86,6 +87,8 @@ class HomeViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -95,16 +98,27 @@ class HomeViewController: UIViewController {
         
         return .lightContent
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
 
     //MARK: 私有方法
     private func configRxTable() {
         //UITableViewDelegate
+        
         homeTableView
             .rx
             .modelSelected(StoryModel.self)
             .subscribe(onNext: { (model) in
                 self.homeTableView.deselectRow(at: self.homeTableView.indexPathForSelectedRow!, animated: true)
-                print("\(model)")
+                let web = DetailViewController()
+                self.dataArr.value.forEach { (sectionModel) in
+                    sectionModel.items.forEach({ (storyModel) in
+                        web.idArr.append(storyModel.id!)
+                    })
+                }
+                web.id = model.id!
+                self.navigationController?.pushViewController(web, animated: true)
             })
             .disposed(by: disposeBag)
         homeTableView
@@ -123,17 +137,7 @@ class HomeViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-
-        homeTableView
-        .rx
-        .contentOffset
-            .subscribe(onNext: { offset in
-                self.navView.backgroundColor = UIColor.colorFromHex(0x3F8DD0).withAlphaComponent(offset.y / 200)
-                self.navView.refreshView.pullToRefresh(progress: -offset.y / 64)
-            })
-        .disposed(by: disposeBag)
-        
-        //MARK: UIScrollViewDelegate
+        //UIScrollViewDelegate
         homeTableView
         .rx
         .didScroll
@@ -162,6 +166,7 @@ class HomeViewController: UIViewController {
                 }
             })
         .disposed(by: disposeBag)
+        
     }
     
     private func requestData() {
@@ -178,6 +183,7 @@ class HomeViewController: UIViewController {
                     imgArr.append(story.image!)
                     titleArr.append(story.title!)
                 }
+                self.bannerArr = model.top_stories!
                 self.bannerView.setUrlsGroup(imgArr, titlesGroup: titleArr)
                 self.newsDate = model.date!
                 self.navView.refreshView.endRefresh()
@@ -237,7 +243,13 @@ extension HomeViewController: ZCycleViewProtocol {
         
     }
     func cycleViewDidSelectedIndex(_ index: Int) {
-        print("点击了\(index)张图片")
+        let model = self.bannerArr[index]
+        let web = DetailViewController()
+        self.bannerArr.forEach { (storyModel) in
+            web.idArr.append(storyModel.id!)
+        }
+        web.id = model.id!
+        self.navigationController?.pushViewController(web, animated: true)
     }
 }
 

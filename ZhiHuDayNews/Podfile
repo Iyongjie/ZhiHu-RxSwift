@@ -15,7 +15,7 @@ pod 'Kingfisher'
 pod 'HandyJSON'
 pod 'SVProgressHUD'
 pod 'ZCycleView'
-pod 'SnapKit'
+pod 'SnapKit' 
   # Pods for ZhiHuDayNews
 
   target 'ZhiHuDayNewsTests' do
